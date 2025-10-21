@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import Reports from "./pages/Reports";
@@ -15,14 +14,8 @@ function App() {
   const [authView, setAuthView] = useState("login"); // "login" or "signup"
   const [currentPage, setCurrentPage] = useState("dashboard");
 
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
-
-  const handleSignup = () => {
-    setIsAuthenticated(true);
-  };
-
+  const handleLogin = () => setIsAuthenticated(true);
+  const handleSignup = () => setIsAuthenticated(true);
   const handleLogout = () => {
     setIsAuthenticated(false);
     setCurrentPage("dashboard");
@@ -49,30 +42,27 @@ function App() {
 
   // Show login/signup if not authenticated
   if (!isAuthenticated) {
-    if (authView === "login") {
-      return (
-        <Login
-          onLogin={handleLogin}
-          onSwitchToSignup={() => setAuthView("signup")}
-        />
-      );
-    } else {
-      return (
-        <Signup
-          onSignup={handleSignup}
-          onSwitchToLogin={() => setAuthView("login")}
-        />
-      );
-    }
+    return authView === "login" ? (
+      <Login
+        onLogin={handleLogin}
+        onSwitchToSignup={() => setAuthView("signup")}
+      />
+    ) : (
+      <Signup
+        onSignup={handleSignup}
+        onSwitchToLogin={() => setAuthView("login")}
+      />
+    );
   }
 
-  // Show main app if authenticated
+  // Main app layout
   return (
-    <div className="flex">
+    <div className="flex h-screen overflow-hidden">
       <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <div className="flex flex-col flex-1">
-        <Navbar onLogout={handleLogout} />
-        <main className="flex-1 overflow-auto">{renderPage()}</main>
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 overflow-auto p-6 bg-gray-50">
+          {renderPage()}
+        </main>
       </div>
     </div>
   );

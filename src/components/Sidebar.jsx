@@ -18,14 +18,11 @@ function Sidebar({ currentPage, setCurrentPage }) {
   ];
 
   return (
-    <aside
-      className="w-64 min-h-screen p-4 text-white"
-      style={{ backgroundColor: "var(--color-zGreen)" }}
-    >
+    <aside className="w-64 bg-green-800 text-white flex flex-col p-4">
       <div className="mb-8">
         <h1 className="text-2xl font-bold">Asset Manager</h1>
       </div>
-      <nav>
+      <nav className="flex-1 overflow-auto">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -33,12 +30,9 @@ function Sidebar({ currentPage, setCurrentPage }) {
               <li key={item.id}>
                 <button
                   onClick={() => setCurrentPage(item.id)}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-white/10 text-white"
-                  style={
-                    currentPage === item.id
-                      ? { backgroundColor: "var(--color-zOrange)" }
-                      : {}
-                  }
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-white/10 ${
+                    currentPage === item.id ? "bg-orange-500" : ""
+                  }`}
                 >
                   <Icon size={20} />
                   <span>{item.label}</span>
