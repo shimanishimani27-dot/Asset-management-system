@@ -1,46 +1,23 @@
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
+// src/components/Chart.jsx
+import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-const data = [
-  { month: "Jan", value: 20000 },
-  { month: "Feb", value: 25000 },
-  { month: "Mar", value: 30000 },
-  { month: "Apr", value: 25000 },
-  { month: "May", value: 35000 },
-  { month: "Jun", value: 58000 },
-  { month: "Jul", value: 40000 },
-  { month: "Aug", value: 30000 },
-  { month: "Sep", value: 30000 },
-  { month: "Oct", value: 29000 },
-  { month: "Nov", value: 28000 },
-  { month: "Dec", value: 25000 },
+const sampleData = [
+  { month: "Jan", value: 400 },
+  { month: "Feb", value: 300 },
+  { month: "Mar", value: 500 },
+  { month: "Apr", value: 200 },
 ];
 
-const Chart = () => {
-  return (
-    <div className="bg-white p-4 shadow rounded-md">
-      <div className="flex justify-between mb-3">
-        <h3 className="font-semibold text-gray-700">Assets Report</h3>
-        <p className="text-sm text-gray-400">Monthly</p>
-      </div>
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={data}>
-          <CartesianGrid stroke="#eee" />
-          <XAxis dataKey="month" />
-          <YAxis />
-          <Tooltip />
-          <Line type="monotone" dataKey="value" stroke="#16a34a" />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
-};
+const Chart = () => (
+  <ResponsiveContainer width="100%" height={300}>
+    <LineChart data={sampleData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+      <XAxis dataKey="month" />
+      <YAxis />
+      <Tooltip />
+      <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+      <Line type="monotone" dataKey="value" stroke="#22c55e" strokeWidth={2} />
+    </LineChart>
+  </ResponsiveContainer>
+);
 
 export default Chart;

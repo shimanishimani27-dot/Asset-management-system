@@ -1,44 +1,17 @@
+// Dated: 26 Oct 2025
 const AssetTable = () => {
   const assets = [
-    {
-      name: "Orl to Mouse",
-      id: "HAND006",
-      desc: "Perfect Condition",
-      type: "In Person",
-      status: "Perfect",
-      action: "OK",
-    },
-    {
-      name: "Keyboard",
-      id: "KEVS7",
-      desc: "Perfect Condition",
-      type: "Damaged",
-      status: "Damaged",
-      action: "OK",
-    },
-    {
-      name: "Desktop",
-      id: "DESK10",
-      desc: "Damaged",
-      type: "Desktop",
-      status: "Damaged",
-      action: "OK",
-    },
-    {
-      name: "Monitors",
-      id: "MON45",
-      desc: "In Repair",
-      type: "In Repair",
-      status: "In Repair",
-      action: "OK",
-    },
+    { name: "Orl to Mouse", id: "HAND006", desc: "Perfect Condition", type: "In Person", status: "Perfect" },
+    { name: "Keyboard", id: "KEVS7", desc: "Perfect Condition", type: "Damaged", status: "Damaged" },
+    { name: "Desktop", id: "DESK10", desc: "Damaged", type: "Desktop", status: "Damaged" },
+    { name: "Monitors", id: "MON45", desc: "In Repair", type: "In Repair", status: "In Repair" },
   ];
 
   return (
     <div className="bg-white p-6 shadow rounded-md mt-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold text-gray-700">Asset List</h3>
-        <div className="text-sm text-gray-500">Showing 4 entries</div>
+        <div className="text-sm text-gray-500">Showing {assets.length} entries</div>
       </div>
 
       <div className="overflow-x-auto">

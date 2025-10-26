@@ -1,17 +1,28 @@
-import { Upload, Download, FileText } from "lucide-react";
+import React from "react";
+import { Upload, Download, FileText, Shield, Bell, User } from "lucide-react";
 
 function Settings() {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6">Settings</h1>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+          <Shield size={28} className="text-green-600" />
+          Settings
+        </h1>
+        <button className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white transition">
+          Save All Changes
+        </button>
+      </div>
 
+      {/* Main Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT SIDE */}
         <div className="lg:col-span-2 space-y-6">
           {/* Profile Settings */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Profile Settings
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4">
+              <User size={20} className="text-green-600" /> Profile Settings
             </h2>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -22,7 +33,7 @@ function Settings() {
                   <input
                     type="text"
                     defaultValue="Admin"
-                    className="w-full px-4 py-2 border rounded-lg outline-none"
+                    className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
                 <div>
@@ -32,7 +43,7 @@ function Settings() {
                   <input
                     type="text"
                     defaultValue="User"
-                    className="w-full px-4 py-2 border rounded-lg outline-none"
+                    className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-500"
                   />
                 </div>
               </div>
@@ -44,7 +55,7 @@ function Settings() {
                 <input
                   type="email"
                   defaultValue="admin@assetmanager.com"
-                  className="w-full px-4 py-2 border rounded-lg outline-none"
+                  className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
 
@@ -55,20 +66,20 @@ function Settings() {
                 <input
                   type="tel"
                   defaultValue="+260 123 456 789"
-                  className="w-full px-4 py-2 border rounded-lg outline-none"
+                  className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>
 
-              <button className="px-6 py-2 bg-zGreen text-white rounded-lg hover:bg-green-700 transition">
-                Save Changes
+              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                Update Profile
               </button>
             </div>
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Security Settings
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4">
+              <Shield size={20} className="text-orange-500" /> Security Settings
             </h2>
             <div className="space-y-4">
               <div>
@@ -77,7 +88,7 @@ function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-4 py-2 border rounded-lg outline-none"
+                  className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
                 />
               </div>
               <div>
@@ -86,7 +97,7 @@ function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-4 py-2 border rounded-lg outline-none"
+                  className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
                 />
               </div>
               <div>
@@ -95,38 +106,38 @@ function Settings() {
                 </label>
                 <input
                   type="password"
-                  className="w-full px-4 py-2 border rounded-lg outline-none"
+                  className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
                 />
               </div>
 
-              <button className="px-6 py-2 bg-zOrange text-white rounded-lg hover:bg-orange-600 transition">
-                Update Password
+              <button className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">
+                Change Password
               </button>
             </div>
           </div>
 
           {/* Notification Settings */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Notification Settings
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition">
+            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4">
+              <Bell size={20} className="text-purple-500" /> Notification Settings
             </h2>
             <div className="space-y-4">
               {[
                 {
                   label: "Email Notifications",
-                  description: "Receive email updates about your account",
+                  description: "Receive updates about system activity",
                 },
                 {
-                  label: "Order Alerts",
-                  description: "Get notified when new orders are placed",
+                  label: "Asset Alerts",
+                  description: "Get notified when assets need attention",
                 },
                 {
-                  label: "Low Stock Alerts",
-                  description: "Receive alerts when products are low in stock",
+                  label: "System Warnings",
+                  description: "Receive critical system alerts",
                 },
                 {
                   label: "Weekly Reports",
-                  description: "Get weekly summary reports via email",
+                  description: "Receive performance summaries via email",
                 },
               ].map((item, i) => (
                 <div
@@ -140,7 +151,7 @@ function Settings() {
                   <label className="relative inline-block w-12 h-6">
                     <input
                       type="checkbox"
-                      defaultChecked={i < 3}
+                      defaultChecked={i < 2}
                       className="sr-only peer"
                     />
                     <div className="w-12 h-6 bg-gray-300 rounded-full peer peer-checked:bg-green-500 transition-colors"></div>
@@ -155,60 +166,53 @@ function Settings() {
         {/* RIGHT SIDE */}
         <div className="space-y-6">
           {/* System Info */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              System Info
-            </h2>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">System Information</h2>
             <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Version</span>
-                <span className="font-semibold text-gray-800">v1.0.0</span>
+              <div className="flex justify-between text-gray-700">
+                <span>Version</span>
+                <span className="font-semibold">v1.0.0</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Last Updated</span>
-                <span className="font-semibold text-gray-800">
-                  Oct 20, 2025
-                </span>
+              <div className="flex justify-between text-gray-700">
+                <span>Last Updated</span>
+                <span className="font-semibold">Oct 20, 2025</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Storage Used</span>
-                <span className="font-semibold text-gray-800">2.4 GB</span>
+              <div className="flex justify-between text-gray-700">
+                <span>Storage Used</span>
+                <span className="font-semibold">2.4 GB</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Plan</span>
-                <span className="font-semibold text-gray-800">
-                  Professional
-                </span>
+              <div className="flex justify-between text-gray-700">
+                <span>Plan</span>
+                <span className="font-semibold text-green-600">Professional</span>
               </div>
             </div>
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">
-              Quick Actions
-            </h2>
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
             <div className="space-y-3">
-              <button className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg">
-                <span className="text-gray-800">Backup Data</span>
-                <Upload size={18} className="text-gray-600" />
-              </button>
-              <button className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg">
-                <span className="text-gray-800">Export Data</span>
-                <Download size={18} className="text-gray-600" />
-              </button>
-              <button className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg">
-                <span className="text-gray-800">View Logs</span>
-                <FileText size={18} className="text-gray-600" />
-              </button>
+              {[
+                { label: "Backup Data", icon: Upload },
+                { label: "Export Data", icon: Download },
+                { label: "View Logs", icon: FileText },
+              ].map(({ label, icon }, i) => (
+                <button
+                  key={i}
+                  className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition"
+                >
+                  <span className="text-gray-800">{label}</span>
+                  {React.createElement(icon, { size: 18, className: "text-gray-600" })}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-red-50 border border-red-200 p-6 rounded-lg shadow">
-            <h2 className="text-xl font-bold text-red-800 mb-2">Danger Zone</h2>
+          <div className="bg-red-50 border border-red-200 p-6 rounded-2xl shadow-sm">
+            <h2 className="text-xl font-bold text-red-700 mb-2">Danger Zone</h2>
             <p className="text-sm text-red-600 mb-4">
-              Irreversible actions that affect your account
+              These actions are irreversible and affect your account.
             </p>
             <button className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
               Delete Account

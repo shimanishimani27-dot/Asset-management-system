@@ -1,19 +1,23 @@
+// App.jsx — Enhanced Version
+// Dated: 26 Oct 2025
+
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
+import Departments from "./pages/Departments";
+import Provinces from "./pages/Provinces";
 import Reports from "./pages/Reports";
-import Purchases from "./pages/Purchases";
-import Products from "./pages/Products";
-import Orders from "./pages/Orders";
+import Settings from "./pages/Settings";
+import Staff from "./pages/Staff";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authView, setAuthView] = useState("login"); // "login" or "signup"
+  const [authView, setAuthView] = useState("login");
   const [currentPage, setCurrentPage] = useState("dashboard");
 
+  // Authentication handlers
   const handleLogin = () => setIsAuthenticated(true);
   const handleSignup = () => setIsAuthenticated(true);
   const handleLogout = () => {
@@ -21,16 +25,19 @@ function App() {
     setCurrentPage("dashboard");
   };
 
+  // Page rendering
   const renderPage = () => {
     switch (currentPage) {
       case "dashboard":
         return <Dashboard />;
-      case "orders":
-        return <Orders />;
-      case "products":
-        return <Products />;
-      case "purchases":
-        return <Purchases />;
+      case "departments":
+        return <Departments />;
+      case "provinces":
+        return <Provinces />;
+      case "assets":
+        return <Assets />;
+      case "staff":
+        return <Staff />;
       case "reports":
         return <Reports />;
       case "settings":
@@ -40,7 +47,7 @@ function App() {
     }
   };
 
-  // Show login/signup if not authenticated
+  // Auth Views
   if (!isAuthenticated) {
     return authView === "login" ? (
       <Login
@@ -55,11 +62,28 @@ function App() {
     );
   }
 
-  // Main app layout
+  // Main App Layout
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Sidebar */}
       <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Navbar */}
+        <header className="h-16 bg-white shadow-sm flex items-center justify-between px-6 border-b">
+          <h2 className="text-lg font-semibold text-gray-700 capitalize">
+            {currentPage}
+          </h2>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        </header>
+
+        {/* Page Content */}
         <main className="flex-1 overflow-auto p-6 bg-gray-50">
           {renderPage()}
         </main>

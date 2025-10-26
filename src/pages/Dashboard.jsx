@@ -1,8 +1,8 @@
+// Updated: 26 Oct 2025
 import { useState } from "react";
 import StatCard from "../components/StatCard";
-import Chart from "../components/Chart";
 import AssetTable from "../components/AssetTable";
-import { PieChart, Pie, Cell, Tooltip } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import zambiaGeoRaw from "../assets/geoBoundaries-ZMB-ADM0_simplified.geojson?raw";
 
@@ -41,69 +41,78 @@ const Dashboard = () => {
   return (
     <div className="p-6 bg-gray-50 flex-1">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-semibold">Asset Management System</h1>
+      <div className="mb-8">
+        <h1 className="text-3xl font-semibold text-gray-800">
+          Dashboard Overview
+        </h1>
+        <p className="text-gray-600 mt-2">
+          Get a quick snapshot of assets, purchases, and distribution across Zambia.
+        </p>
       </div>
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Total Assets"
-          value="$320,500"
-          change="5% increase from last month"
+          value="320,500"
+          change="+5% increase from last month"
           color="border-green-500"
         />
         <StatCard
           title="Total Purchases"
-          value="$145,200"
-          change="20% decrease from last month"
+          value="145,200"
+          change="-20% decrease from last month"
           color="border-orange-400"
         />
         <StatCard
           title="Total Paid"
-          value="$88,400"
-          change="45% increase from last month"
+          value="88,400"
+          change="+45% increase from last month"
           color="border-purple-400"
         />
       </div>
 
       {/* Charts Section */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
-        <div className="col-span-2 bg-white p-4 rounded-lg shadow">
-          <Chart />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start mb-8">
+        {/* Placeholder Bar/Line Chart */}
+        <div className="col-span-2 bg-white p-5 rounded-lg shadow h-64 flex items-center justify-center text-gray-400 border-2 border-dashed">
+          Chart will go here
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
+
+        {/* Pie Chart */}
+        <div className="bg-white p-5 rounded-lg shadow">
           <h3 className="font-semibold text-gray-700 mb-4">
             Assets by Category
           </h3>
-          <div className="flex items-center justify-center h-64">
-            <PieChart width={300} height={300}>
+          <div className="flex justify-center items-center">
+            <PieChart width={280} height={280}>
               <Pie
                 data={assetData}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
-                label
+                outerRadius={90}
+                label={({ name, value }) => `${name} (${value})`}
               >
                 {assetData.map((entry, index) => (
                   <Cell key={index} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
+              <Legend />
             </PieChart>
           </div>
         </div>
       </div>
 
       {/* Zambia Map Section */}
-      <div className="mt-6 bg-white p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow mb-8">
         <h3 className="font-semibold text-gray-700 mb-4">
           Asset Distribution Across Zambia
         </h3>
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-          {/* Map Container */}
+          {/* Map */}
           <div className="w-full lg:w-2/3 h-96 lg:h-[500px]">
             <ComposableMap
               projection="geoMercator"
@@ -124,9 +133,7 @@ const Dashboard = () => {
                       <Geography
                         key={geo.rsmKey}
                         geography={geo}
-                        fill={
-                          provinceData ? getColor(provinceData.value) : "#ccc"
-                        }
+                        fill={provinceData ? getColor(provinceData.value) : "#ccc"}
                         stroke="#fff"
                         strokeWidth={0.5}
                         onMouseEnter={() =>
@@ -148,15 +155,20 @@ const Dashboard = () => {
             </ComposableMap>
           </div>
 
-          {/* Tooltip / Info Card */}
+          {/* Province Info */}
           {hoveredProvince && (
-            <div className="p-4 bg-green-50 border border-green-300 rounded-lg shadow w-64">
-              <h4 className="font-semibold text-gray-800">
+            <div className="p-5 bg-green-50 border border-green-300 rounded-lg shadow w-64">
+              <h4 className="font-semibold text-gray-800 text-lg">
                 {hoveredProvince.province}
               </h4>
               <p className="text-sm text-gray-600 mt-2">
-                Assets:{" "}
-                <span className="font-bold">{hoveredProvince.value}</span>
+                Total Assets:{" "}
+                <span className="font-bold text-green-700">
+                  {hoveredProvince.value}
+                </span>
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Hover over other provinces to compare.
               </p>
             </div>
           )}
