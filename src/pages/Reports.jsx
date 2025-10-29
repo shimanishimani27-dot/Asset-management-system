@@ -1,4 +1,5 @@
 // Updated: 26 Oct 2025
+import { useEffect, useState } from "react";
 import {
   Download,
   BarChart3,
@@ -8,6 +9,23 @@ import {
 } from "lucide-react";
 
 function Reports() {
+  const [assetCounts, setAssetCounts] = useState({ total: 0, good: 0, repair: 0, bad: 0 });
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch('/api/assets');
+        const data = res.ok ? await res.json() : [];
+        if (Array.isArray(data)) {
+          const total = data.length;
+          const good = data.filter(a => (a.condition || a.metadata?.condition) === 'Good').length;
+          const repair = data.filter(a => (a.condition || a.metadata?.condition) === 'Repair').length;
+          const bad = data.filter(a => (a.condition || a.metadata?.condition) === 'Bad').length;
+          setAssetCounts({ total, good, repair, bad });
+        }
+      } catch {}
+    };
+    load();
+  }, []);
   const reports = [
     {
       title: "Asset Inventory Summary",
@@ -56,28 +74,28 @@ function Reports() {
         {[
           {
             title: "Asset Inventory",
-            value: "320",
+            value: String(assetCounts.total),
             change: "Across laptops, desktops, printers, keyboards",
             icon: <Package size={22} style={{ color: "var(--color-zGreen)" }} />,
             color: "text-green-600",
           },
           {
             title: "Good Condition",
-            value: "230",
+            value: String(assetCounts.good),
             change: "Operational",
             icon: <BarChart3 size={22} style={{ color: "var(--color-zGreen)" }} />,
             color: "text-green-600",
           },
           {
             title: "In Repair",
-            value: "60",
+            value: String(assetCounts.repair),
             change: "Under maintenance",
             icon: <FileText size={22} style={{ color: "var(--color-zOrange)" }} />,
             color: "text-yellow-700",
           },
           {
             title: "Bad Condition",
-            value: "30",
+            value: String(assetCounts.bad),
             change: "Pending decommission",
             icon: <TrendingUp size={22} style={{ color: "var(--color-zRed)" }} />,
             color: "text-red-600",

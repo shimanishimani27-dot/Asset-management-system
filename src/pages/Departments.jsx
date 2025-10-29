@@ -1,10 +1,23 @@
 // Departments.jsx — Dated: 26 Oct 2025
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Search, Filter, Plus, Edit, Trash2, Users, Package, MapPin, Eye, X, Sun, Moon, Grid3X3, Rows } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import Chart from "../components/Chart";
 
 const Departments = () => {
+  const [apiAssetsCount, setApiAssetsCount] = useState(null);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch('/api/assets');
+        const data = res.ok ? await res.json() : [];
+        setApiAssetsCount(Array.isArray(data) ? data.length : 0);
+      } catch {
+        setApiAssetsCount(null);
+      }
+    };
+    load();
+  }, []);
   const [departments, setDepartments] = useState([
     { name: "IT", assets: 50, staff: 10, office: "HQ", province: "Lusaka", head: "Mr. Banda", description: "ICT and Support", status: "Active", value: 450000 },
     { name: "Finance", assets: 40, staff: 8, office: "Ndola", province: "Copperbelt", head: "Mrs. Zulu", description: "Accounts and Budget", status: "Active", value: 260000 },
@@ -151,7 +164,7 @@ const Departments = () => {
           <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center"><Package size={20}/></div>
           <div>
             <p className="text-sm text-gray-500">Total Assets</p>
-            <p className="text-2xl font-bold text-gray-800">{totals.assets}</p>
+            <p className="text-2xl font-bold text-gray-800">{apiAssetsCount ?? totals.assets}</p>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow border border-gray-100 flex items-center gap-3 hover:shadow-md transition">

@@ -1,9 +1,30 @@
 // Provinces.jsx — Enhanced with Visual Boundaries and Divisions
 // Dated: 26 Oct 2025
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { MapPin, Users, Building2, TrendingUp, Eye, Edit, Trash2, Plus } from "lucide-react";
 
 const Provinces = () => {
+  const [apiAssetsCount, setApiAssetsCount] = useState(null);
+  const [apiAssets, setApiAssets] = useState([]);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch('/api/assets');
+        const data = res.ok ? await res.json() : [];
+        if (Array.isArray(data)) {
+          setApiAssets(data);
+          setApiAssetsCount(data.length);
+        } else {
+          setApiAssets([]);
+          setApiAssetsCount(0);
+        }
+      } catch {
+        setApiAssets([]);
+        setApiAssetsCount(null);
+      }
+    };
+    load();
+  }, []);
   const [provinces] = useState([
     { 
       name: "Lusaka", 
@@ -127,6 +148,25 @@ const Provinces = () => {
     },
   ]);
 
+  // Compute assets count by province name (case-insensitive)
+  const assetsByProvince = useMemo(() => {
+    const map = {};
+    for (const a of apiAssets) {
+      const prov = ((a.province || a.metadata?.province || '') + '').trim().toLowerCase();
+      if (!prov) continue;
+      map[prov] = (map[prov] || 0) + 1;
+    }
+    return map;
+  }, [apiAssets]);
+
+  // Merge API-derived counts into the displayed provinces list
+  const provincesComputed = useMemo(() => {
+    return provinces.map(p => ({
+      ...p,
+      assets: assetsByProvince[p.name.toLowerCase()] ?? p.assets,
+    }));
+  }, [provinces, assetsByProvince]);
+
   const getStatusColor = (status) => {
     switch (status) {
       case "High Activity": return "text-green-600 bg-green-100 border-green-200";
@@ -209,7 +249,7 @@ const Provinces = () => {
             <div>
               <p className="text-gray-600 text-sm">Total Assets</p>
               <p className="text-2xl font-bold text-gray-800">
-                {provinces.reduce((sum, p) => sum + p.assets, 0)}
+                {apiAssetsCount ?? provinces.reduce((sum, p) => sum + p.assets, 0)}
               </p>
             </div>
             <Building2 className="text-blue-600" size={24} />
@@ -244,7 +284,7 @@ const Provinces = () => {
       {/* Province Cards Grid View */}
       {viewMode === "grid" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {provinces.map((province, i) => (
+          {provincesComputed.map((province, i) => (
             <div
               key={i}
               className={`bg-white rounded-lg shadow border-l-4 ${getProvinceColor(province.color)} hover:shadow-lg transition-all duration-200 cursor-pointer`}
@@ -323,7 +363,7 @@ const Provinces = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {provinces.map((province, i) => (
+                {provincesComputed.map((province, i) => (
                   <tr key={i} className="hover:bg-gray-50 transition">
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
