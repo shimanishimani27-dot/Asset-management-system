@@ -43,7 +43,7 @@ function App() {
       case "reports":
         return <Reports />;
       case "settings":
-        return <Settings />;
+        return <Settings onLogout={handleLogout} />;
       default:
         return <Dashboard />;
     }
@@ -72,19 +72,6 @@ function App() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Navbar */}
-        <header className="h-16 bg-white shadow-sm flex items-center justify-between px-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-700">
-            asset management system(AOG)
-          </h2>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-          >
-            Logout
-          </button>
-        </header>
-
         {/* Page Content */}
         <main className="flex-1 overflow-auto p-6 bg-gray-50">
           {renderPage()}

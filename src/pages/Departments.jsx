@@ -82,7 +82,7 @@ const Departments = () => {
 
   return (
     <div className={`${themeDark ? 'bg-slate-900 text-slate-100' : 'bg-gray-50'} min-h-screen` }>
-      <div className="sticky top-0 z-20">
+      <div>
         <div className="px-6 pt-6">
           <div className="rounded-2xl px-6 py-5 shadow-lg border bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/60" style={{backgroundImage: 'linear-gradient(135deg,#f9fafb, #eef2ff)'}}>
             <div className="flex items-start sm:items-center justify-between gap-3 flex-col sm:flex-row">

@@ -27,7 +27,7 @@ function Sidebar({ currentPage, setCurrentPage }) {
         <div className="bg-orange-500 w-10 h-10 flex items-center justify-center rounded-lg text-xl font-bold">
           AM
         </div>
-        <h1 className="text-2xl font-bold tracking-wide">Zambia</h1>
+        <h1 className="text-2xl font-bold tracking-wide">(AOG)</h1>
       </div>
 
       {/* Navigation */}

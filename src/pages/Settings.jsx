@@ -1,17 +1,20 @@
 import React from "react";
 import { Upload, Download, FileText, Shield, Bell, User } from "lucide-react";
 
-function Settings() {
+function Settings({ onLogout }) {
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
           <Shield size={28} className="text-green-600" />
-          Settings
+          asset management system(AOG)
         </h1>
-        <button className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white transition">
-          Save All Changes
+        <button
+          onClick={onLogout}
+          className="px-4 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition"
+        >
+          Logout
         </button>
       </div>
 

@@ -1,5 +1,5 @@
 // Updated: 26 Oct 2025
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StatCard from "../components/StatCard";
 import AssetTable from "../components/AssetTable";
 import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
@@ -28,6 +28,32 @@ const Dashboard = () => {
     { province: "Southern", coordinates: [27.1, -16.7] },
   ];
   const COLORS = ["#047857", "#fb923c", "#a78bfa", "#60a5fa"];
+
+  // Load assets from backend for consistency with Assets page
+  const [assets, setAssets] = useState([]);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch('/api/assets');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (Array.isArray(data)) setAssets(data);
+      } catch {}
+    };
+    load();
+  }, []);
+
+  // Map to AssetTable format
+  const assetsForTable = assets.map(a => ({
+    name: a.name || 'Unnamed',
+    id: a.tag || a._id || 'N/A',
+    desc: a.category || a.name || '',
+    type: a.category || 'Unknown',
+    status: a.condition || 'Good',
+  }));
+
+  const goodCount = assetsForTable.filter(a => a.status === 'Good').length;
+  const nonGoodCount = assetsForTable.length - goodCount;
 
   // Helper functions for province label positioning (centered in each province)
   const getProvinceLabelX = (provinceName) => {
@@ -109,19 +135,19 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Total Assets"
-          value={assetData.reduce((s, a) => s + a.value, 0).toLocaleString()}
+          value={(assetsForTable.length || 0).toLocaleString()}
           change="Across laptops, desktops, printers, keyboards"
           color="border-green-500"
         />
         <StatCard
           title="In Good Condition"
-          value={"230"}
+          value={(goodCount || 0).toString()}
           change="Operational"
           color="border-green-500"
         />
         <StatCard
           title="In Repair / Bad"
-          value={"90"}
+          value={(nonGoodCount || 0).toString()}
           change="Under maintenance or decommission"
           color="border-orange-400"
         />
@@ -376,7 +402,7 @@ const Dashboard = () => {
 
       {/* Asset Table */}
       <div className="mt-6">
-        <AssetTable />
+        <AssetTable assets={assetsForTable} />
       </div>
     </div>
   );
