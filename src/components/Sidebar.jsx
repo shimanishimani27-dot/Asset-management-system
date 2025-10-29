@@ -21,7 +21,7 @@ function Sidebar({ currentPage, setCurrentPage }) {
   ];
 
   return (
-    <aside className="w-64 bg-green-800 text-white flex flex-col p-4 shadow-lg">
+    <aside className="w-64 bg-green-800 text-white flex flex-col p-4 shadow-lg overflow-x-hidden">
       {/* Logo / Header */}
       <div className="mb-10 flex items-center gap-2">
         <div className="bg-orange-500 w-10 h-10 flex items-center justify-center rounded-lg text-xl font-bold">
@@ -31,7 +31,7 @@ function Sidebar({ currentPage, setCurrentPage }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-auto">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;

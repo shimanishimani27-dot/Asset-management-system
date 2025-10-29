@@ -4,8 +4,7 @@ import StatCard from "../components/StatCard";
 import AssetTable from "../components/AssetTable";
 import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
-// Use official geoBoundaries ADM1 (province) shapes directly from CDN
-const ZMB_ADM1_URL = "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/ZMB/ADM1/geoBoundaries-ZMB-ADM1.geojson";
+import zmbAdm1 from "../assets/geoBoundaries-ZMB-ADM1_simplified.geojson";
 
 const Dashboard = () => {
   const assetData = [
@@ -215,7 +214,7 @@ const Dashboard = () => {
           {/* Map */}
           <div className="w-full lg:w-2/3 h-96 lg:h-[500px] relative bg-gray-100 rounded-lg overflow-hidden">
             <ComposableMap projection="geoMercator" projectionConfig={{ scale: 2000, center: [27.8, -14.5] }} width={800} height={500}>
-              <Geographies geography={ZMB_ADM1_URL}>
+              <Geographies geography={zmbAdm1}>
                 {({ geographies }) =>
                   geographies.map((geo) => {
                     const props = geo.properties || {};
@@ -241,7 +240,7 @@ const Dashboard = () => {
                 }
               </Geographies>
               {/* Province border overlay (drawn on top) */}
-              <Geographies geography={ZMB_ADM1_URL}>
+              <Geographies geography={zmbAdm1}>
                 {({ geographies }) =>
                   geographies.map((geo) => (
                     <Geography
