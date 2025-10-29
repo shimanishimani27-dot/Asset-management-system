@@ -1,4 +1,3 @@
-// src/components/Chart.jsx
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
 const sampleData = [

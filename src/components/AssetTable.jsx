@@ -1,10 +1,9 @@
-// Dated: 26 Oct 2025
-const AssetTable = () => {
-  const assets = [
-    { name: "Orl to Mouse", id: "HAND006", desc: "Perfect Condition", type: "In Person", status: "Perfect" },
-    { name: "Keyboard", id: "KEVS7", desc: "Perfect Condition", type: "Damaged", status: "Damaged" },
-    { name: "Desktop", id: "DESK10", desc: "Damaged", type: "Desktop", status: "Damaged" },
-    { name: "Monitors", id: "MON45", desc: "In Repair", type: "In Repair", status: "In Repair" },
+ const AssetTable = ({ assets: inputAssets }) => {
+  const assets = inputAssets || [
+    { name: "Laptop", id: "LAP-001", desc: "Dell Latitude 7420", type: "Laptop", status: "Good" },
+    { name: "Desktop", id: "DESK-010", desc: "HP ProDesk 600", type: "Desktop", status: "Repair" },
+    { name: "Printer", id: "PRN-203", desc: "Canon i-SENSYS LBP226dw", type: "Printer", status: "Good" },
+    { name: "Keyboard", id: "KBD-517", desc: "Logitech K120", type: "Keyboard", status: "Bad" },
   ];
 
   return (
@@ -36,9 +35,9 @@ const AssetTable = () => {
                 <td className="py-3">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      item.status === "Damaged"
+                      item.status === "Bad"
                         ? "bg-red-100 text-red-600"
-                        : item.status === "In Repair"
+                        : item.status === "Repair"
                         ? "bg-yellow-100 text-yellow-700"
                         : "bg-green-100 text-green-700"
                     }`}

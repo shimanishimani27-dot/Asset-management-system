@@ -1,5 +1,3 @@
-// Sidebar.jsx — Updated UI polish version
-// Dated: 26 Oct 2025
 import {
   Home,
   Users,

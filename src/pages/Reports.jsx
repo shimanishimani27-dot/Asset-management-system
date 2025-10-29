@@ -10,22 +10,22 @@ import {
 function Reports() {
   const reports = [
     {
-      title: "Sales Report Q3 2025",
+      title: "Asset Inventory Summary",
       date: "Oct 15, 2025",
       size: "2.4 MB",
     },
     {
-      title: "Inventory Report Sep 2025",
+      title: "Asset Conditions by Department",
       date: "Oct 01, 2025",
       size: "1.8 MB",
     },
     {
-      title: "Purchase Report Aug 2025",
+      title: "Asset Conditions by Province",
       date: "Sep 15, 2025",
       size: "1.2 MB",
     },
     {
-      title: "Profit & Loss Q2 2025",
+      title: "Quarterly Asset Condition Trend",
       date: "Aug 30, 2025",
       size: "3.1 MB",
     },
@@ -55,32 +55,32 @@ function Reports() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         {[
           {
-            title: "Sales Report",
-            value: "$45,678",
-            change: "+12% from last month",
+            title: "Asset Inventory",
+            value: "320",
+            change: "Across laptops, desktops, printers, keyboards",
+            icon: <Package size={22} style={{ color: "var(--color-zGreen)" }} />,
+            color: "text-green-600",
+          },
+          {
+            title: "Good Condition",
+            value: "230",
+            change: "Operational",
             icon: <BarChart3 size={22} style={{ color: "var(--color-zGreen)" }} />,
             color: "text-green-600",
           },
           {
-            title: "Purchase Report",
-            value: "$32,100",
-            change: "+8% from last month",
+            title: "In Repair",
+            value: "60",
+            change: "Under maintenance",
             icon: <FileText size={22} style={{ color: "var(--color-zOrange)" }} />,
-            color: "text-green-600",
+            color: "text-yellow-700",
           },
           {
-            title: "Inventory Report",
-            value: "1,234",
-            change: "-3% from last month",
-            icon: <Package size={22} style={{ color: "var(--color-zGold)" }} />,
-            color: "text-red-600",
-          },
-          {
-            title: "Profit Margin",
-            value: "23.5%",
-            change: "+2% from last month",
+            title: "Bad Condition",
+            value: "30",
+            change: "Pending decommission",
             icon: <TrendingUp size={22} style={{ color: "var(--color-zRed)" }} />,
-            color: "text-green-600",
+            color: "text-red-600",
           },
         ].map((card, i) => (
           <div
@@ -113,10 +113,10 @@ function Reports() {
                 Report Type
               </label>
               <select className="w-full px-4 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-300">
-                <option>Sales Report</option>
-                <option>Purchase Report</option>
-                <option>Inventory Report</option>
-                <option>Profit & Loss Report</option>
+                <option>Asset Inventory</option>
+                <option>Asset Conditions by Department</option>
+                <option>Asset Conditions by Province</option>
+                <option>Condition Trend</option>
               </select>
             </div>
 

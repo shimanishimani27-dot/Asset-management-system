@@ -1,21 +1,23 @@
-// App.jsx — Enhanced Version
-// Dated: 26 Oct 2025
-
-import { useState } from "react";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard";
-import Departments from "./pages/Departments";
-import Provinces from "./pages/Provinces";
-import Reports from "./pages/Reports";
-import Settings from "./pages/Settings";
+import { useState, useEffect } from "react";
 import Staff from "./pages/Staff";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
+import Dashboard from "./pages/Dashboard";
+import Sidebar from "./components/Sidebar";
+import Provinces from "./pages/Provinces";
+import Departments from "./pages/Departments";
+import Assets from "./pages/Assets";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authView, setAuthView] = useState("login");
   const [currentPage, setCurrentPage] = useState("dashboard");
+
+  useEffect(() => {
+    document.title = "asset management system(AOG)";
+  }, []);
 
   // Authentication handlers
   const handleLogin = () => setIsAuthenticated(true);
@@ -72,8 +74,8 @@ function App() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navbar */}
         <header className="h-16 bg-white shadow-sm flex items-center justify-between px-6 border-b">
-          <h2 className="text-lg font-semibold text-gray-700 capitalize">
-            {currentPage}
+          <h2 className="text-lg font-semibold text-gray-700">
+            asset management system(AOG)
           </h2>
           <button
             onClick={handleLogout}

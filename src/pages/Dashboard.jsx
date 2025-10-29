@@ -2,18 +2,30 @@
 import { useState } from "react";
 import StatCard from "../components/StatCard";
 import AssetTable from "../components/AssetTable";
-import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import zambiaGeoRaw from "../assets/geoBoundaries-ZMB-ADM0_simplified.geojson?raw";
-
-const zambiaGeo = JSON.parse(zambiaGeoRaw);
+import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+// Use official geoBoundaries ADM1 (province) shapes directly from CDN
+const ZMB_ADM1_URL = "https://media.githubusercontent.com/media/wmgeolab/geoBoundaries/main/releaseData/gbOpen/ZMB/ADM1/geoBoundaries-ZMB-ADM1.geojson";
 
 const Dashboard = () => {
   const assetData = [
-    { name: "Vehicles", value: 300 },
-    { name: "Buildings", value: 180 },
-    { name: "Equipment", value: 120 },
-    { name: "Land", value: 80 },
+    { name: "Laptops", value: 120 },
+    { name: "Desktops", value: 90 },
+    { name: "Printers", value: 60 },
+    { name: "Keyboards", value: 50 },
+  ];
+  // Approximate province centroids (lon, lat)
+  const provinceCenters = [
+    { province: "Northern", coordinates: [31.5, -9.1] },
+    { province: "Muchinga", coordinates: [32.8, -10.2] },
+    { province: "Eastern", coordinates: [32.8, -13.6] },
+    { province: "Luapula", coordinates: [29.7, -10.9] },
+    { province: "Copperbelt", coordinates: [28.6, -12.6] },
+    { province: "North-Western", coordinates: [25.7, -12.0] },
+    { province: "Central", coordinates: [29.4, -14.5] },
+    { province: "Lusaka", coordinates: [28.3, -15.4] },
+    { province: "Western", coordinates: [23.6, -15.0] },
+    { province: "Southern", coordinates: [27.1, -16.7] },
   ];
   const COLORS = ["#047857", "#fb923c", "#a78bfa", "#60a5fa"];
 
@@ -89,7 +101,7 @@ const Dashboard = () => {
           Dashboard Overview
         </h1>
         <p className="text-gray-600 mt-2">
-          Get a quick snapshot of assets, purchases, and distribution across Zambia.
+          Snapshot of ICT assets and their conditions across Zambia.
         </p>
       </div>
 
@@ -97,36 +109,49 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard
           title="Total Assets"
-          value="320,500"
-          change="+5% increase from last month"
+          value={assetData.reduce((s, a) => s + a.value, 0).toLocaleString()}
+          change="Across laptops, desktops, printers, keyboards"
           color="border-green-500"
         />
         <StatCard
-          title="Total Purchases"
-          value="145,200"
-          change="-20% decrease from last month"
-          color="border-orange-400"
+          title="In Good Condition"
+          value={"230"}
+          change="Operational"
+          color="border-green-500"
         />
         <StatCard
-          title="Total Paid"
-          value="88,400"
-          change="+45% increase from last month"
-          color="border-purple-400"
+          title="In Repair / Bad"
+          value={"90"}
+          change="Under maintenance or decommission"
+          color="border-orange-400"
         />
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start mb-8">
         {/* Placeholder Bar/Line Chart */}
-        <div className="col-span-2 bg-white p-5 rounded-lg shadow h-64 flex items-center justify-center text-gray-400 border-2 border-dashed">
-          Chart will go here
+        <div className="col-span-2 bg-white p-5 rounded-lg shadow h-64">
+          <h3 className="font-semibold text-gray-700 mb-4">Assets by Province</h3>
+          <div className="w-full h-[180px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={zambiaData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis dataKey="province" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} />
+                <Tooltip />
+                <Bar dataKey="value">
+                  {zambiaData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={getColor(entry.value)} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Pie Chart */}
         <div className="bg-white p-5 rounded-lg shadow">
-          <h3 className="font-semibold text-gray-700 mb-4">
-            Assets by Category
-          </h3>
+          <h3 className="font-semibold text-gray-700 mb-4">Assets by Category</h3>
           <div className="flex justify-center items-center">
             <PieChart width={280} height={280}>
               <Pie
@@ -163,114 +188,72 @@ const Dashboard = () => {
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           {/* Map */}
           <div className="w-full lg:w-2/3 h-96 lg:h-[500px] relative bg-gray-100 rounded-lg overflow-hidden">
-            <ComposableMap
-              projection="geoMercator"
-              projectionConfig={{ scale: 2000, center: [27.8, -14.5] }}
-              width={800}
-              height={500}
-            >
-              <Geographies geography={zambiaGeo}>
+            <ComposableMap projection="geoMercator" projectionConfig={{ scale: 2000, center: [27.8, -14.5] }} width={800} height={500}>
+              <Geographies geography={ZMB_ADM1_URL}>
+                {({ geographies }) =>
+                  geographies.map((geo) => {
+                    const props = geo.properties || {};
+                    const name = (props.shapeName || props.shapeName_en || props.NAME_1 || props.ADMIN || "").toString();
+                    const match = zambiaData.find(p => p.province.toLowerCase() === name.toLowerCase());
+                    const fill = match ? getColor(match.value) : "#e5e7eb";
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill={fill}
+                        stroke="none"
+                        onMouseEnter={() => setHoveredProvince(match || { province: name, value: 0, departments: 0, staff: 0, status: "" })}
+                        onMouseLeave={() => setHoveredProvince(null)}
+                        style={{
+                          default: { outline: "none", transition: "all 0.2s ease" },
+                          hover: { opacity: 0.9, outline: "none" },
+                          pressed: { outline: "none" },
+                        }}
+                      />
+                    );
+                  })
+                }
+              </Geographies>
+              {/* Province border overlay (drawn on top) */}
+              <Geographies geography={ZMB_ADM1_URL}>
                 {({ geographies }) =>
                   geographies.map((geo) => (
                     <Geography
-                      key={geo.rsmKey}
+                      key={`border-${geo.rsmKey}`}
                       geography={geo}
-                      fill="#f3f4f6"
-                      stroke="#1f2937"
+                      fill="none"
+                      stroke="#111827"
                       strokeWidth={2}
-                      style={{
-                        default: { 
-                          outline: "none",
-                          transition: "all 0.2s ease"
-                        },
-                        hover: { 
-                          fill: "#e5e7eb",
-                          outline: "none"
-                        },
-                        pressed: { 
-                          fill: "#d1d5db",
-                          outline: "none"
-                        },
-                      }}
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      vectorEffect="non-scaling-stroke"
+                      style={{ default: { outline: "none" }, hover: { outline: "none" }, pressed: { outline: "none" } }}
+                      pointerEvents="none"
                     />
                   ))
                 }
               </Geographies>
-              
-              {/* Create properly positioned, non-overlapping province boundaries */}
-              {zambiaData.map((province, index) => {
-                // Define non-overlapping province shapes based on actual Zambian geography
-                const provinceShapes = {
-                  "Northern": "M 400,80 L 500,100 L 480,160 L 420,180 L 380,140 L 400,80 Z",
-                  "Muchinga": "M 500,100 L 600,120 L 580,180 L 520,160 L 500,100 Z",
-                  "Eastern": "M 580,180 L 680,200 L 660,260 L 560,240 L 580,180 Z",
-                  "Luapula": "M 320,160 L 420,180 L 400,240 L 340,220 L 320,160 Z",
-                  "Copperbelt": "M 380,140 L 480,160 L 460,220 L 400,200 L 380,140 Z",
-                  "North-Western": "M 280,120 L 380,140 L 360,200 L 300,180 L 280,120 Z",
-                  "Central": "M 400,200 L 500,220 L 480,280 L 420,260 L 400,200 Z",
-                  "Lusaka": "M 420,260 L 480,280 L 460,320 L 400,300 L 420,260 Z",
-                  "Western": "M 200,240 L 300,260 L 280,340 L 220,320 L 200,240 Z",
-                  "Southern": "M 400,300 L 500,320 L 480,380 L 420,360 L 400,300 Z"
-                };
-                
-                const provincePath = provinceShapes[province.province] || "M 400,200 L 450,200 L 450,250 L 400,250 Z";
-                
+              {/* Province labels */}
+              {provinceCenters.map((c) => {
+                const match = zambiaData.find(p => p.province.toLowerCase() === c.province.toLowerCase());
                 return (
-                  <g key={province.province}>
-                    {/* Province shape with clear boundaries */}
-                    <path
-                      d={provincePath}
-                      fill={getColor(province.value)}
-                      fillOpacity={0.8}
-                      stroke="#ffffff"
-                      strokeWidth={2}
-                      style={{ 
-                        cursor: "pointer",
-                        transition: "all 0.2s ease"
-                      }}
-                      onMouseEnter={() => setHoveredProvince(province)}
-                      onMouseLeave={() => setHoveredProvince(null)}
-                    />
-                    
-                    {/* Province label positioned in center of shape */}
-                    <text
-                      x={getProvinceLabelX(province.province)}
-                      y={getProvinceLabelY(province.province)}
-                      fontSize="9"
-                      fill="#1f2937"
-                      fontWeight="bold"
-                      textAnchor="middle"
-                      style={{ 
-                        cursor: "pointer",
-                        textShadow: "1px 1px 2px rgba(255,255,255,0.9)"
-                      }}
-                      onMouseEnter={() => setHoveredProvince(province)}
-                      onMouseLeave={() => setHoveredProvince(null)}
-                    >
-                      {province.province}
+                  <Marker key={c.province} coordinates={c.coordinates}>
+                    {/* Halo */}
+                    <text y={-2} textAnchor="middle" fontSize={10} stroke="#ffffff" strokeWidth={3} paintOrder="stroke" fill="#111827">
+                      {c.province}
                     </text>
-                    
-                    {/* Asset count */}
-                    <text
-                      x={getProvinceLabelX(province.province)}
-                      y={getProvinceLabelY(province.province) + 10}
-                      fontSize="8"
-                      fill="#1f2937"
-                      fontWeight="bold"
-                      textAnchor="middle"
-                      style={{ 
-                        cursor: "pointer",
-                        textShadow: "1px 1px 2px rgba(255,255,255,0.9)"
-                      }}
-                      onMouseEnter={() => setHoveredProvince(province)}
-                      onMouseLeave={() => setHoveredProvince(null)}
-                    >
-                      {province.value}
+                    {/* Label */}
+                    <text y={-2} textAnchor="middle" fontSize={10} fill="#111827">
+                      {c.province}
                     </text>
-                  </g>
+                    {match && (
+                      <text y={10} textAnchor="middle" fontSize={9} fill="#374151">
+                        {match.value}
+                      </text>
+                    )}
+                  </Marker>
                 );
               })}
-              
             </ComposableMap>
             
             {/* Map Title Overlay */}

@@ -259,21 +259,8 @@ const Provinces = () => {
                   </span>
                 </div>
 
-                {/* Province Details */}
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600 text-sm">Capital:</span>
-                    <span className="font-semibold text-gray-800">{province.capital}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600 text-sm">Population:</span>
-                    <span className="font-semibold text-gray-800">{province.population}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600 text-sm">Area:</span>
-                    <span className="font-semibold text-gray-800">{province.area}</span>
-                  </div>
-                </div>
+                {/* Province Details (removed population, area, capital) */}
+                <div className="space-y-3 mb-4"></div>
 
                 {/* Divider */}
                 <div className="border-t border-gray-200 my-4"></div>
@@ -327,7 +314,6 @@ const Provinces = () => {
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="py-4 px-6 text-sm font-semibold text-gray-700">Province</th>
-                  <th className="py-4 px-6 text-sm font-semibold text-gray-700">Capital</th>
                   <th className="py-4 px-6 text-sm font-semibold text-gray-700">Assets</th>
                   <th className="py-4 px-6 text-sm font-semibold text-gray-700">Staff</th>
                   <th className="py-4 px-6 text-sm font-semibold text-gray-700">Departments</th>
@@ -349,7 +335,6 @@ const Provinces = () => {
                         <span className="font-semibold text-gray-800">{province.name}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-6 text-gray-700">{province.capital}</td>
                     <td className="py-4 px-6">
                       <span className="font-semibold text-green-600">{province.assets}</span>
                     </td>
@@ -406,20 +391,8 @@ const Provinces = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="font-semibold text-gray-700 mb-3">Basic Information</h3>
+                    <h3 className="font-semibold text-gray-700 mb-3">Status</h3>
                     <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Capital:</span>
-                        <span className="font-semibold">{selectedProvince.capital}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Population:</span>
-                        <span className="font-semibold">{selectedProvince.population}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Area:</span>
-                        <span className="font-semibold">{selectedProvince.area}</span>
-                      </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Status:</span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(selectedProvince.status)}`}>
